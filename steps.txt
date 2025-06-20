@@ -1,0 +1,14 @@
+1)create package.json file
+run: npm init --y
+
+2)run:
+    npm install typescript ts-node @types/node nodemon @types/cors @types/express --save-dev
+    npm install pg dotenv cors express
+
+3)Next, we generate a tsconfig.json file with command:
+./node_modules/.bin/tsc --init
+
+4)Set up your server
+to start your server, 
+-npm run build – use this if you just want to compile and see .js files.
+-npm run start – use this to compile and start your server in one command.
