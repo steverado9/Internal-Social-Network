@@ -1,18 +1,20 @@
 import dotenv from "dotenv";
+import pkg from "pg";
+
 
 dotenv.config();
 
-export const config = {
-    HOST: process.env.DB_HOST!,
-    USER: process.env.DB_USER!,
-    PASSWORD: process.env.DB_PASSWORD!,
-    DB: process.env.DB_NAME!,
-    DIALECT: process.env.DIALECT,
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-}
+const { Pool } = pkg;
+
+
+const pool = new Pool({
+    host: process.env.DB_HOST!,
+    user: process.env.DB_USER!,
+    password: process.env.DB_PASSWORD!,
+    database: process.env.DB_NAME!,
+    max: 20, // Max number of clients in the pool
+    idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+});
+
+export default pool;
 

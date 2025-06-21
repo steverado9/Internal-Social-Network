@@ -12,3 +12,5 @@ run: npm init --y
 to start your server, 
 -npm run build – use this if you just want to compile and see .js files.
 -npm run start – use this to compile and start your server in one command.
+
+5) set up your database without using orm libraries
