@@ -14,3 +14,27 @@ to start your server,
 -npm run start – use this to compile and start your server in one command.
 
 5) set up your database without using orm libraries
+
+6) Eslint: This analyzes your code and find problems
+-set up Eslint
+npm init @eslint/config@latest
+
+-you can run eslint on any file like this
+npx eslint yourfile.js 
+
+7)Mocha: This is used to test asynchronous functions
+-setting up mocha as a development dependency for your project:
+ npm install --save-dev mocha
+
+-in the script file 
+ "scripts": {
+  "test": "mocha"
+}
+
+-Then run tests with:
+
+$ npm test
+
+8)Github Project Boards
+how to setup github project boards
+"https://codeburst.io/an-introduction-to-github-project-boards-2944e6ffbf3c"
