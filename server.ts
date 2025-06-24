@@ -2,12 +2,15 @@ import express, { Application } from "express";
 import dotenv from "dotenv";
 import Server from "./src/index";
 import Database from "./src/db";
+import Routes from "./src/route";
 
 dotenv.config();
 
 const app: Application = express();
 
 const server: Server = new Server(app);
+
+const routes: Routes = new Routes(app);
 
 const database: Database = new Database();
 

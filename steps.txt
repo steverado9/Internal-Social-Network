@@ -38,3 +38,13 @@ $ npm test
 8)Github Project Boards
 how to setup github project boards
 "https://codeburst.io/an-introduction-to-github-project-boards-2944e6ffbf3c"
+
+9)Set up the routes
+-Applying jwt token to the routes
+installation: npm i jsonwebtoken
+
+10) bycrpt: to hash the password
+npm install bcryptjs
+
+11)Parameterized query($1, $2, $3): prevents sql injection
+article: https://node-postgres.com/features/queries
