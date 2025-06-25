@@ -48,3 +48,9 @@ npm install bcryptjs
 
 11)Parameterized query($1, $2, $3): prevents sql injection
 article: https://node-postgres.com/features/queries
+
+12)Jwt token
+When to generate token
+ When a user successfully creates/logs in with their credentials,  the server verifies these credentials.
+ Upon successful verification, the server generates a JWT token.
+ This token contains a payload with relevant user information (e.g., user ID, roles) and is signed with a secret key.

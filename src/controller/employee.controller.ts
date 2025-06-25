@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import pool from "../db/db.config";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+dotenv.config();
 
 export default class employeeController {
     //create an employee
@@ -14,7 +18,7 @@ export default class employeeController {
             });
             return;
         }
-        
+
         // Validate role
         const allowedRoles = ['admin', 'employee'];
         if (!allowedRoles.includes(jobRole)) {
@@ -34,17 +38,72 @@ export default class employeeController {
 
             const result = await pool.query(text, values);
             console.log("result = >");
-                
+
+            //create jwt token
+            const token = jwt.sign({ id: result.rows[0].id }, process.env.JWT_SECRET!, {
+                algorithm: "HS256",
+                allowInsecureKeySizes: true,
+                expiresIn: 86400, // 24 hours
+            })
+
             res.status(201).json({
                 status: 'success',
                 data: {
                     message: "User account successfully created",
+                    token: token,
                     userId: result.rows[0].id
                 }
             })
-        } catch(err) {
+        } catch (err) {
             console.error("Signup error:", err);
-            res.status(500).json({message: 'Internal Server Error'});
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+
+    //signin
+    async signin(req: Request, res: Response) {
+        console.log("signin = >");
+        try {
+            //getting the email and password from the req.body
+            const { email, password } = req.body;
+
+            const result = await pool.query(`
+            SELECT * FROM employees WHERE email=$1 `,
+            [email]
+            );
+            console.log("result = >", result);
+
+            if (!result) {
+                res.status(404).json({
+                    message: "User not found!"
+                });
+            }
+            //comparing password from the req.body and database
+            console.log("password = >", password);
+            console.log("result password = >", result.rows[0].password);
+            const isMatch = await bcrypt.compare(password, result.rows[0].password);
+            if (!isMatch) {
+                res.status(401).json({
+                    message: "Invalid password!"
+                });
+            }
+            //Generate token
+            const token = jwt.sign({ id: result.rows[0].id, email: email, password: password, jobRole: result.rows[0].jobRole },
+                process.env.JWT_SECRET!, {
+                algorithm: "HS256",
+                allowInsecureKeySizes: true,
+                expiresIn: 86400, // 24 hours
+            })
+            res.status(201).json({
+                status: 'success',
+                data: {
+                    token: token,
+                    userId: result.rows[0].id
+                }
+            })
+        } catch (err) { 
+            console.error("Signup error:", err);
+            res.status(500).json({ message: 'Internal Server Error' });
         }
     }
 }

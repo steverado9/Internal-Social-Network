@@ -1,5 +1,6 @@
 import { Router } from "express";
 import employeeController from "../controller/employee.controller";
+import auth from "../middleware/authjwt";
 
 class EmployeeRoutes {
     router = Router();
@@ -10,7 +11,11 @@ class EmployeeRoutes {
     }
 
     initializeRoutes() {
-        this.router.post("/", this.employeeController.signup)
+        //Signup
+        this.router.post("/create-user" ,this.employeeController.signup);
+
+        //sign in
+        this.router.post("/signin", auth ,this.employeeController.signin);
     }
 }
 
