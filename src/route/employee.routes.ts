@@ -16,6 +16,9 @@ class EmployeeRoutes {
 
         //sign in
         this.router.post("/signin", auth ,this.employeeController.signin);
+
+        //gif
+        this.router.post("/gif", this.employeeController.gif);
     }
 }
 

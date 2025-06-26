@@ -3,6 +3,8 @@ import pool from "../db/db.config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import cloudinary from "../utils/cloudinary";
+
 
 dotenv.config();
 
@@ -69,7 +71,7 @@ export default class employeeController {
 
             const result = await pool.query(`
             SELECT * FROM employees WHERE email=$1 `,
-            [email]
+                [email]
             );
             console.log("result = >", result);
 
@@ -101,8 +103,39 @@ export default class employeeController {
                     userId: result.rows[0].id
                 }
             })
-        } catch (err) { 
+        } catch (err) {
             console.error("Signup error:", err);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+
+    //create gif
+    async gif(req: Request, res: Response) {
+        const { title, image_url } = req.body;
+        if (!image_url || !title) {
+            res.status(400).json({ message: "image and title required" });
+            return;
+        }
+        try {
+            const text = `
+                INSERT INTO gif (image_url, title)
+                VALUES ($1, $2) 
+                RETURNING *`;
+            const values = [image_url, title];
+            const result = await pool.query(text, values);
+            console.log("result of gif = >", result);
+
+            res.status(201).json({
+                status: 'success',
+                data: {
+                    gifId: result,
+                    message: "GIF image successfully posted",
+                    title: title,
+                    imageUrl: image_url
+                }
+            })
+        } catch (err) {
+             console.error(" Gif image upload error:", err);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }

@@ -54,3 +54,12 @@ When to generate token
  When a user successfully creates/logs in with their credentials,  the server verifies these credentials.
  Upon successful verification, the server generates a JWT token.
  This token contains a payload with relevant user information (e.g., user ID, roles) and is signed with a secret key.
+
+13)Cloudinary
+npm install cloudinary
+
+create a cloudinary.ts file and set up your cloudinary.config
+get the image id from cloudinary if you want to use image from cloudinary
+get the image path, if you want to use the image from your local device
+
+
