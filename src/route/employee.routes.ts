@@ -19,6 +19,9 @@ class EmployeeRoutes {
 
         //gif
         this.router.post("/gif", this.employeeController.gif);
+
+        //article 
+        this.router.post('/articles', this.employeeController.createArticle);
     }
 }
 

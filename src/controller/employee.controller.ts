@@ -135,8 +135,37 @@ export default class employeeController {
                 }
             })
         } catch (err) {
-             console.error(" Gif image upload error:", err);
+            console.error(" Gif image upload error:", err);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
+    //create article
+    async createArticle(req: Request, res: Response) {
+        try {
+            const { title, content } = req.body;
+
+            if (!title || !content) {
+                return res.status(400).json({ message: 'Title and content are required' });
+            }
+
+            const employeeID = req.user.id; // Assuming JWT middleware sets req.user
+
+            const result = await pool.query(
+                `INSERT INTO articles (title, content, employeeID)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+                [title, content, employeeID]
+            );
+
+            return res.status(201).json({
+                message: 'Article created successfully',
+                data: result.rows[0],
+            });
+        } catch (error: any) {
+            console.error('Error creating article:', error.message);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    }
+
 }
