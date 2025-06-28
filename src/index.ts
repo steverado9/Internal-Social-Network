@@ -11,7 +11,7 @@ export default class Server {
             origin: "http://localhost:8081",
             allowedHeaders: ["x-access-token, Origin, Content-Type, Accept"]
         };
-        app.use(cors(CorsOptions));
+        // app.use(cors(CorsOptions));
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
     }

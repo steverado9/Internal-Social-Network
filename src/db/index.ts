@@ -1,4 +1,5 @@
-import pool from "./db.config"
+import pool from "./db.config";
+import bcrypt from "bcryptjs";
 
 class Database {
 
@@ -10,20 +11,22 @@ class Database {
             await pool.query("SELECT NOW()");
             console.log("connection has been established successfully.");
             // Call seedRoles after syncing
-            await this.seedEmployee();
-            await this.seedGif();
+            await this.usersTable();
+            await this.createAdmin();
+            await this.gifsTable();
+            await this.articlesTable();
         } catch (err) {
             console.error("Unable to connect to the Database:", (err as Error).message);
         }
     }
 
     //The database needs to have those role records available
-    private async seedEmployee() {
-        try { 
+    private async usersTable() {
+        try {
             //create table
             await pool.query(`
-                CREATE TABLE IF NOT EXISTS employees ( 
-                    employeeID SERIAL PRIMARY KEY,
+                CREATE TABLE IF NOT EXISTS users ( 
+                    userID SERIAL PRIMARY KEY,
                     firstname VARCHAR(100),
                     lastname VARCHAR(100),
                     email VARCHAR(100) UNIQUE NOT NULL,
@@ -34,33 +37,60 @@ class Database {
                     address TEXT
                 );`
             );
-            // //insert into table
-            // const result = await pool.query(`
-            //     INSERT INTO employees (firstname, lastname, email, password, gender, jobRole, department, address)
-            //     VALUES ('Isaac', 'Stephen', 'isaac@example.com', 'stephen123', 'Male', 'admin', 'Engineering', 'Lagos, Nigeria')
-            //     ON CONFLICT DO NOTHING`
-            // );
-            console.log("Employees table seeded.");
+            console.log("Users table created.");
         } catch (err) {
-            console.error("Employees Table Seeding failed:", (err as Error).message);
+            console.error("Users Table creation failed:", (err as Error).message);
         }
     }
 
-    private async seedGif() {
+    private async createAdmin() {
+        try {
+             // insert user with hashed password
+            const password = 'stephen123';
+            const hashedPassword = await bcrypt.hash(password, 8);
+            const text = `
+                INSERT INTO users (firstname, lastname, email, password, gender, jobRole, department, address)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+                RETURNING *`;
+            const values = ['Stephen', 'Isaac', 'isaac.stephen@example.com', hashedPassword, 'Male', 'admin', 'Engineering', '7 Adekoya Street, Lagos, Nigeria'];
+            await pool.query(text, values);
+            console.log("admin created sucessfully");
+
+        } catch (err: any) {
+            console.error("admin creation failed:", err.message);
+        }
+    }
+
+    private async gifsTable() {
         try {
             await pool.query(`
-                CREATE TABLE IF NOT EXISTS gif (
+                CREATE TABLE IF NOT EXISTS gifs (
                 gifID SERIAL PRIMARY KEY,
                 image_url TEXT,
                 title VARCHAR(100),
-                employeeID INTEGER,
-                FOREIGN KEY(employeeID) REFERENCES employees(employeeID)
+                userID INTEGER,
+                FOREIGN KEY(userID) REFERENCES users(userID)
                 )`);
-            console.log("gif table seeded.");
-        } catch(err) {
-            console.error("gif Table Seeding failed:", (err as Error).message);
+            console.log("gifs table created.");
+        } catch (err) {
+            console.error("gifs Table creation failed:", (err as Error).message);
         }
+    }
 
+    private async articlesTable() {
+        try {
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS articles(
+                articleID SERIAL PRIMARY KEY,
+                title VARCHAR(100),
+                content TEXT,
+                userID INTEGER,
+                FOREIGN KEY(userID) REFERENCES users(userID)
+                )`);
+            console.log("articles table created.");
+        } catch (err) {
+            console.error("articles Table creation failed:", (err as Error).message);
+        }
     }
 }
 

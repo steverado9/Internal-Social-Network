@@ -9,20 +9,4 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const image_url = cloudinary.url('cld-sample-5', {
-    transformation: [
-        {
-            fetch_format: 'auto',
-             quality: 'auto'
-        },
-        {
-           width: 1200,
-           height: 1200,
-           crop: 'fill',
-           gravity: 'auto'
-        }
-    ]
-});
-console.log(image_url);
-
 export default cloudinary;
