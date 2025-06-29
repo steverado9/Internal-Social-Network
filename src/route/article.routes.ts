@@ -19,8 +19,8 @@ class ArticleRoute {
         //DELETE ARTICLE
         this.router.delete("/:id", this.articleController.deleteArticle);
 
-        //
-        this.router.delete("/:id", this.articleController.deleteArticle);
+        //ADD COMMENT
+        this.router.delete("/:id/comment", this.articleController.addComment);
 
     }
 }

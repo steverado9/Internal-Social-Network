@@ -81,4 +81,19 @@ export default class ArticleController {
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
+    //comment on article
+    async addComment(req: Request, res: Response): Promise<void> {
+        const { comment } = req.body;
+        const id = req.params.id;
+        try {
+            const result = await pool.query(`
+                INSERT INTO Articlecomments (comment)
+                VALUES ($1) 
+                WHERE id = $1
+                RETURNING *`,
+                [comment, id]
+            )
+        }catch (err) {}
+    }
 }

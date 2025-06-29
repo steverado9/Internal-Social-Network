@@ -11,16 +11,29 @@ class Database {
             await pool.query("SELECT NOW()");
             console.log("connection has been established successfully.");
             // Call seedRoles after syncing
+            await this.dropTables();
             await this.usersTable();
             await this.createAdmin();
             await this.gifsTable();
             await this.articlesTable();
+            await this.articleCommentTable();
         } catch (err) {
             console.error("Unable to connect to the Database:", (err as Error).message);
         }
     }
 
     //The database needs to have those role records available
+    private async dropTables() {
+        try {
+            //drop Table if it exist
+            await pool.query(`DROP TABLE IF EXISTS gifs`);
+            await pool.query(`DROP TABLE IF EXISTS articles`);
+            await pool.query(`DROP TABLE IF EXISTS users`);
+            console.log("All tables dropped.");
+        } catch (err) {
+            console.error(" Table drop failed:", (err as Error).message);
+        }
+    }
     private async usersTable() {
         try {
             //create table
@@ -45,7 +58,7 @@ class Database {
 
     private async createAdmin() {
         try {
-             // insert user with hashed password
+            // insert user with hashed password
             const password = 'stephen123';
             const hashedPassword = await bcrypt.hash(password, 8);
             const text = `
@@ -91,6 +104,21 @@ class Database {
         } catch (err) {
             console.error("articles Table creation failed:", (err as Error).message);
         }
+    }
+
+    private async articleCommentTable() {
+        try {
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS Articlecomments(
+                commentID SERIAL PRIMARY KEY,
+                comment TEXT,
+                articleID INTEGER,
+                FOREIGN KEY(articleID) REFERENCES articles(articleID))
+                `);
+            console.log("article comment table created.");
+        } catch (err) {
+            console.error("article comment Table creation failed:", (err as Error).message);
+         }
     }
 }
 
