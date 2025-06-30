@@ -1,5 +1,6 @@
 import { Router } from "express";
 import GifController from "../controller/gif.controller";
+import authenticate from "../middleware/authjwt";
 
 class GifRoutes {
     router = Router();
@@ -11,7 +12,7 @@ class GifRoutes {
 
     initializeRoutes() {
         //CREATE GIF
-        this.router.post("/", this.gitController.createGif);
+        this.router.post("/", authenticate.verifyToken, this.gitController.createGif);
 
         //DELETE GIF
         this.router.delete("/:id", this.gitController.deletegif);

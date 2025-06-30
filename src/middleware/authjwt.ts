@@ -6,8 +6,8 @@ import pool from "../db/db.config";
 dotenv.config();
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-        const token = (req.headers["authorization"] as string).split(" ")[1]; //// token: "bearer xyz"
+    try {//optional chaining
+        const token = (req.headers["authorization"] as string)?.split(" ")[1]; //// token: "bearer xyz"
 
         if (!token) {
             res.status(403).json({ message: "No token provided!" });
@@ -31,19 +31,9 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction): Pro
 
 const isAdmin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const jobRole = 'admin';
-        const result = await pool.query(`
-            SELECT * FROM users WHERE jobRole=$1` ,
-            [jobRole]
-        )
-        if (!result) {
-            res.status(404).json({
-                message: "User not found!"
-            });
-        }
-
-        const role = result.rows[0].jobRole
-        if (role === jobRole) {
+        const job_role = 'admin';
+        const role = (req as any).user.jobRole
+        if (role === job_role) {
             next();
             return;
         }

@@ -10,8 +10,8 @@ class Database {
         try {
             await pool.query("SELECT NOW()");
             console.log("connection has been established successfully.");
-            // Call seedRoles after syncing
-            await this.dropTables();
+            // Call all the tables after establishing connection
+            // await this.dropTables();
             await this.usersTable();
             await this.createAdmin();
             await this.gifsTable();
@@ -26,6 +26,7 @@ class Database {
     private async dropTables() {
         try {
             //drop Table if it exist
+            await pool.query(`DROP TABLE IF EXISTS article_comments`);
             await pool.query(`DROP TABLE IF EXISTS gifs`);
             await pool.query(`DROP TABLE IF EXISTS articles`);
             await pool.query(`DROP TABLE IF EXISTS users`);
@@ -39,15 +40,16 @@ class Database {
             //create table
             await pool.query(`
                 CREATE TABLE IF NOT EXISTS users ( 
-                    userID SERIAL PRIMARY KEY,
-                    firstname VARCHAR(100),
-                    lastname VARCHAR(100),
+                    user_id SERIAL PRIMARY KEY,
+                    firstname VARCHAR(100) NOT NULL,
+                    lastname VARCHAR(100) NOT NULL,
                     email VARCHAR(100) UNIQUE NOT NULL,
                     password TEXT NOT NULL,
-                    gender VARCHAR(10),
-                    jobrole VARCHAR(50), 
-                    department VARCHAR(100),
-                    address TEXT
+                    gender VARCHAR(10) NOT NULL,
+                    job_role VARCHAR(50) NOT NULL, 
+                    department VARCHAR(100) NOT NULL,
+                    address TEXT NOT NULL,
+                    created_at TIMESTAMP WITH TIME ZONE
                 );`
             );
             console.log("Users table created.");
@@ -62,8 +64,8 @@ class Database {
             const password = 'stephen123';
             const hashedPassword = await bcrypt.hash(password, 8);
             const text = `
-                INSERT INTO users (firstname, lastname, email, password, gender, jobRole, department, address)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+                INSERT INTO users (firstname, lastname, email, password, gender, job_role, department, address, created_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW()) 
                 RETURNING *`;
             const values = ['Stephen', 'Isaac', 'isaac.stephen@example.com', hashedPassword, 'Male', 'admin', 'Engineering', '7 Adekoya Street, Lagos, Nigeria'];
             await pool.query(text, values);
@@ -78,11 +80,12 @@ class Database {
         try {
             await pool.query(`
                 CREATE TABLE IF NOT EXISTS gifs (
-                gifID SERIAL PRIMARY KEY,
-                image_url TEXT,
-                title VARCHAR(100),
-                userID INTEGER,
-                FOREIGN KEY(userID) REFERENCES users(userID)
+                gif_id SERIAL PRIMARY KEY,
+                image_url TEXT NOT NULL,
+                title VARCHAR(100) NOT NULL,
+                user_id INTEGER NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE,
+                FOREIGN KEY(user_id) REFERENCES users(user_id)
                 )`);
             console.log("gifs table created.");
         } catch (err) {
@@ -94,11 +97,12 @@ class Database {
         try {
             await pool.query(`
                 CREATE TABLE IF NOT EXISTS articles(
-                articleID SERIAL PRIMARY KEY,
-                title VARCHAR(100),
-                content TEXT,
-                userID INTEGER,
-                FOREIGN KEY(userID) REFERENCES users(userID)
+                article_id SERIAL PRIMARY KEY,
+                title VARCHAR(100) NOT NULL,
+                content TEXT NOT NULL,
+                user_id INTEGER NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE,
+                FOREIGN KEY(user_id) REFERENCES users(user_id)
                 )`);
             console.log("articles table created.");
         } catch (err) {
@@ -109,11 +113,14 @@ class Database {
     private async articleCommentTable() {
         try {
             await pool.query(`
-                CREATE TABLE IF NOT EXISTS Articlecomments(
-                commentID SERIAL PRIMARY KEY,
-                comment TEXT,
-                articleID INTEGER,
-                FOREIGN KEY(articleID) REFERENCES articles(articleID))
+                CREATE TABLE IF NOT EXISTS article_comments(
+                comment_id SERIAL PRIMARY KEY,
+                comment TEXT NOT NULL,
+                article_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE,
+                FOREIGN KEY(article_id) REFERENCES articles(article_id),
+                FOREIGN KEY(user_id) REFERENCES users(user_id))
                 `);
             console.log("article comment table created.");
         } catch (err) {

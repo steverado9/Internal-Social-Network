@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ArticleController from "../controller/article.controller";
-
+import authenticate from "../middleware/authjwt";
+ 
 class ArticleRoute {
     router = Router();
     articleController = new ArticleController();
@@ -11,17 +12,16 @@ class ArticleRoute {
 
     initializeRoutes() {
         //CREATE ARTICLE
-        this.router.post("/", this.articleController.createArticle);
+        this.router.post("/", authenticate.verifyToken, this.articleController.createArticle);
 
         //EDIT ARTICLE
-        this.router.put("/:id", this.articleController.editArticle);
+        this.router.put("/:id", authenticate.verifyToken, this.articleController.editArticle);
 
         //DELETE ARTICLE
-        this.router.delete("/:id", this.articleController.deleteArticle);
+        this.router.delete("/:id", authenticate.verifyToken, this.articleController.deleteArticle);
 
-        //ADD COMMENT
-        this.router.delete("/:id/comment", this.articleController.addComment);
-
+        //GET Article
+        this.router.get("/:id", authenticate.verifyToken, this.articleController.getArticle);
     }
 }
 

@@ -11,11 +11,11 @@ class UserRoutes {
     }
 
     initializeRoutes() {
-         //sign in
-        this.router.post("/signin", auth.isAdmin, auth.verifyToken, this.userController.signin);
-
         //Signup
-        this.router.post("/create-user" ,this.userController.createUser);
+        this.router.post("/create-user", auth.verifyToken, auth.isAdmin, this.userController.createUser);
+
+        //sign in
+        this.router.post("/signin", this.userController.signin);
     }
 }
 
