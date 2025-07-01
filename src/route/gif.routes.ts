@@ -16,6 +16,11 @@ class GifRoutes {
 
         //DELETE GIF
         this.router.delete("/:id", this.gitController.deletegif);
+
+        //ADD COMMENT TO GIF
+        this.router.post("/:id/comment", authenticate.verifyToken,this.gitController.createComment);
+
+
     }
 }
 

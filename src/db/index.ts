@@ -17,6 +17,7 @@ class Database {
             await this.gifsTable();
             await this.articlesTable();
             await this.articleCommentTable();
+            await this.gifCommentTable();
         } catch (err) {
             console.error("Unable to connect to the Database:", (err as Error).message);
         }
@@ -26,6 +27,7 @@ class Database {
     private async dropTables() {
         try {
             //drop Table if it exist
+            await pool.query(`DROP TABLE IF EXISTS gif_comments`)
             await pool.query(`DROP TABLE IF EXISTS article_comments`);
             await pool.query(`DROP TABLE IF EXISTS gifs`);
             await pool.query(`DROP TABLE IF EXISTS articles`);
@@ -125,6 +127,24 @@ class Database {
             console.log("article comment table created.");
         } catch (err) {
             console.error("article comment Table creation failed:", (err as Error).message);
+         }
+    }
+
+    private async gifCommentTable() {
+        try {
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS gif_comments(
+                comment_id SERIAL PRIMARY KEY,
+                comment TEXT NOT NULL,
+                gif_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE,
+                FOREIGN KEY(gif_id) REFERENCES gifs(gif_id),
+                FOREIGN KEY(user_id) REFERENCES users(user_id))
+                `);
+            console.log("gif comment table created.");
+        } catch (err) {
+            console.error("gif comment Table creation failed:", (err as Error).message);
          }
     }
 }

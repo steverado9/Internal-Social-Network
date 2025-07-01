@@ -20,6 +20,9 @@ class ArticleRoute {
         //DELETE ARTICLE
         this.router.delete("/:id", authenticate.verifyToken, this.articleController.deleteArticle);
 
+        //ADD COMMENT TO ARTICLE
+        this.router.post("/:id/comment", authenticate.verifyToken, this.articleController.createComment);
+
         //GET Article
         this.router.get("/:id", authenticate.verifyToken, this.articleController.getArticle);
     }

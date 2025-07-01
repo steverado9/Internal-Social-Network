@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import pool from "../db/db.config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import { successResponse, errorResponse } from "../response/handleResponse";
 
 dotenv.config();
 
@@ -12,16 +13,14 @@ export default class UserController {
         const { firstname, lastname, email, password, gender, job_role, department, address } = req.body;
         //Basic validation
         if (!email || !password) {
-            res.status(400).json({
-                message: "email and password required"
-            });
+            errorResponse(res, 400, 'email and password required');
             return;
         }
 
         // Validate role
         const allowedRoles = ['admin', 'employee'];
         if (!allowedRoles.includes(job_role)) {
-            res.status(400).json({ message: 'Invalid job role' });
+            errorResponse(res, 400, 'Invalid job role');
             return;
         }
 
@@ -43,14 +42,12 @@ export default class UserController {
                 allowInsecureKeySizes: true,
                 expiresIn: 86400, // 24 hours
             })
-
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    message: "User account successfully created",
-                    token: token,
-                    userId: result.rows[0].user_id,
-                    user: {
+            //payload parameter in the success response 
+            const data = {
+                message: "User account successfully created",
+                token: token,
+                userId: result.rows[0].user_id,
+                user: {
                         firstname,
                         lastname,
                         email,
@@ -59,12 +56,11 @@ export default class UserController {
                         department,
                         address
                     }
-                    //return user created, expect password
-                }
-            })
+            }
+            successResponse(res, 201, data);
         } catch (err) {
             console.error("Signup error:", err);
-            res.status(500).json({ message: 'Internal Server Error' });
+            errorResponse(res, 500, 'Internal Server Error');
         }
     }
 
@@ -81,16 +77,14 @@ export default class UserController {
             );
 
             if (!result) {
-                res.status(404).json({
-                    message: "User not found!"
-                });
+                errorResponse(res, 404, "User not found!");
+                return;
             }
             //comparing password from the req.body and database
             const isMatch = await bcrypt.compare(password, result.rows[0].password);
             if (!isMatch) {
-                res.status(401).json({
-                    message: "Invalid password!"
-                });
+                errorResponse(res, 401, "Invalid password!");
+                return;
             }
             //Generate token
             const token = jwt.sign({ id: result.rows[0].user_id, email: email, jobRole: result.rows[0].job_role },
@@ -98,17 +92,15 @@ export default class UserController {
                 algorithm: "HS256",
                 allowInsecureKeySizes: true,
                 expiresIn: 86400, // 24 hours
-            })
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    token: token,
-                    userId: result.rows[0].user_id
-                }
-            })
+            });
+            const data = {
+                token: token,
+                userId: result.rows[0].user_id
+            }
+            successResponse(res, 201, data);
         } catch (err) {
             console.error("Signup error:", err);
-            res.status(500).json({ message: 'Internal Server Error' });
+            errorResponse(res, 500, 'Internal Server Error');
         }
     }
 
