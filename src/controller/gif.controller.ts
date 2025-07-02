@@ -1,35 +1,42 @@
 import { Request, Response } from "express";
 import pool from "../db/db.config";
 import { successResponse, errorResponse } from "../response/handleResponse";
+import cloudinary from "../utils/cloudinary";
+import path, { dirname } from "node:path";
+import fsPromises from "fs/promises";
 
 export default class GifController {
     //create gif
     async createGif(req: Request, res: Response): Promise<void> {
-        const { title, image_url } = req.body;
+
+        const { title, image } = req.body;
         const user_id = (req as any).user.id
-        if (!image_url || !title) {
+        if (!image || !title) {
             errorResponse(res, 400, "image and title required");
             return;
         }
+
         try {
+            const cloudinaryImage = await cloudinary.uploader.upload(image);
+            console.log("image_url = > ", cloudinaryImage.url);
+
             const text = `
                 INSERT INTO gifs (image_url, title, user_id, created_at)
                 VALUES ($1, $2, $3, NOW()) 
                 RETURNING *`;
-            const values = [image_url, title, user_id];
+            const values = [cloudinaryImage.url, title, user_id];
             const result = await pool.query(text, values);
-            console.log("result of gif = >", result.rows[0]);
 
             const data = {
                 gifId: result.rows[0].gif_id,
                 message: "GIF image successfully posted",
                 createdOn: result.rows[0].created_at,
                 title: title,
-                imageUrl: image_url
+                imageUrl: result.rows[0].image_url
             }
             successResponse(res, 201, data);
         } catch (err: any) {
-            console.error(" Gif image upload error:", err.message);
+            console.error(" Gif image upload error:", err);
             errorResponse(res, 500, 'Internal Server Error');
         }
     }
@@ -57,7 +64,7 @@ export default class GifController {
     async createComment(req: Request, res: Response): Promise<void> {
         const { comment } = req.body;
         const gif_id = req.params.id;
-        const user_id = (req as any).user.id
+        const user_id = (req as any).user.id;
         try {
             const gif = await pool.query(`
                 SELECT * FROM gifs WHERE gif_id = $1`, [gif_id]
@@ -68,12 +75,11 @@ export default class GifController {
             }
 
             const result = await pool.query(`
-                INSERT INTO gif (comment, gif_id, user_id, created_at)
+                INSERT INTO gif_comments (comment, gif_id, user_id, created_at)
                 VALUES ($1, $2, $3, NOW()) 
                 RETURNING *`,
                 [comment, gif_id, user_id]
             );
-            console.log("result =>", result);
             const data = {
                 message: "Comment successfully created",
                 createdOn: result?.rows[0]?.created_at,
@@ -83,6 +89,39 @@ export default class GifController {
             successResponse(res, 201, data);
         } catch (err: any) {
             console.error(" Error creating gif comment", err.message);
+            errorResponse(res, 500, 'Internal Server Error');
+        }
+    }
+
+     //get one gif
+    async getOneGif(req: Request, res: Response): Promise<void> {
+        const gif_id = req.params.id;
+        try {
+            const result = await pool.query(`SELECT * FROM gifs WHERE gif_id = $1`, [gif_id]);
+            //if number of rows == 0
+            if (result.rowCount === 0) {
+                errorResponse(res, 404, 'gif not found');
+                return;
+            }
+            const gifs = await pool.query(`SELECT * FROM gif_comments WHERE gif_id = $1`, [gif_id]);
+            //array
+            const comments = gifs.rows.map(comment => {
+                return {
+                    commentId: comment.comment_id,
+                    comment: comment.comment,
+                    authorID: comment.user_id
+                }
+            });
+            const data = {
+                id: gif_id,
+                createdOn: result.rows[0].created_at,
+                title: result.rows[0].title,
+                url: result.rows[0].image_url,
+                comments: comments
+            }
+            successResponse(res, 201, data);
+        } catch (err: any) {
+            console.error(" Error getting gifs", err.message);
             errorResponse(res, 500, 'Internal Server Error');
         }
     }

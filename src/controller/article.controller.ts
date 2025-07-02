@@ -18,7 +18,6 @@ export default class ArticleController {
                 RETURNING *`;
             const values = [title, content, user_id];
             const result = await pool.query(text, values);
-            console.log("result of article = >", result.rows[0]);
             const data = {
                 message: "Article successfully posted",
                 articleId: result.rows[0].article_id,
@@ -98,7 +97,6 @@ export default class ArticleController {
                 RETURNING *`,
                 [comment, article_id, user_id]
             );
-            console.log("result =>", result);
             const data = {
                 message: "Comment successfully created",
                 createdOn: result?.rows[0]?.created_at,
@@ -113,8 +111,8 @@ export default class ArticleController {
         }
     }
 
-    //get article
-    async getArticle(req: Request, res: Response): Promise<void> {
+    //get one article
+    async getOneArticle(req: Request, res: Response): Promise<void> {
         const article_id = req.params.id;
         try {
             const result = await pool.query(`SELECT * FROM articles WHERE article_id = $1`, [article_id]);
@@ -124,8 +122,6 @@ export default class ArticleController {
                 return;
             }
             const comments = await pool.query(`SELECT * FROM article_comments WHERE article_id = $1`, [article_id]);
-            // console.log("result = >", result);
-            console.log("comment =>", comments);
             //array
             const articleComments = comments.rows.map(comment => {
                 return {
@@ -147,5 +143,6 @@ export default class ArticleController {
             errorResponse(res, 500, 'Internal Server Error');
         }
     }
+
 
 }

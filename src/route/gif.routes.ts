@@ -15,10 +15,14 @@ class GifRoutes {
         this.router.post("/", authenticate.verifyToken, this.gitController.createGif);
 
         //DELETE GIF
-        this.router.delete("/:id", this.gitController.deletegif);
+        this.router.delete("/:id", authenticate.verifyToken, this.gitController.deletegif);
 
         //ADD COMMENT TO GIF
-        this.router.post("/:id/comment", authenticate.verifyToken,this.gitController.createComment);
+        this.router.post("/:id/gif", authenticate.verifyToken, this.gitController.createComment);
+
+        //GET ONE ARTICLE BY ID
+        this.router.get("/:id", authenticate.verifyToken, this.gitController.getOneGif);
+
 
 
     }

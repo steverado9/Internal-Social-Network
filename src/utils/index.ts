@@ -14,6 +14,5 @@ const imageUrl = cloudinary.url('cld-sample-5', {
         }
     ]
 });
-console.log(imageUrl);
 
 export default imageUrl;

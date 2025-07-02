@@ -74,7 +74,7 @@ class Database {
             console.log("admin created sucessfully");
 
         } catch (err: any) {
-            console.error("admin creation failed:", err.message);
+            // console.error("admin creation failed:", err.message);
         }
     }
 
@@ -147,6 +147,7 @@ class Database {
             console.error("gif comment Table creation failed:", (err as Error).message);
          }
     }
+
 }
 
 export default Database;
