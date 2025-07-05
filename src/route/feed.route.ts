@@ -11,7 +11,19 @@ class FeedRoute {
     }
 
     initializeRoute() {
-         //VIEW ALL THE ARTICLES BY TIME
+        //VIEW ALL THE ARTICLES AND GIF BY TIME
+        /**
+        * @swagger
+        * /v1/feed:
+        *   get:
+        *     security: 
+        *       - bearerAuth: []
+        *     summary: Display all gifs and articles
+        *     tags: [feed]
+        *     responses:
+        *       500:
+        *         description: Internal server error
+        */
         this.router.get("/", authenticate.verifyToken, this.feedController.feed);
     }
 }

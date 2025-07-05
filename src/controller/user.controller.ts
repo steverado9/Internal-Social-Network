@@ -44,18 +44,18 @@ export default class UserController {
             })
             //payload parameter in the success response 
             const data = {
-                message: "User account successfully created",
+                message: "employee account successfully created",
                 token: token,
                 userId: result.rows[0].user_id,
                 user: {
-                        firstname,
-                        lastname,
-                        email,
-                        gender,
-                        job_role,
-                        department,
-                        address
-                    }
+                    firstname,
+                    lastname,
+                    email,
+                    gender,
+                    job_role,
+                    department,
+                    address
+                }
             }
             successResponse(res, 201, data);
         } catch (err) {

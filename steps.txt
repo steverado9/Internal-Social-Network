@@ -63,5 +63,14 @@ get an image
 convert it to base64
 store it in cloudinary
 
+14)Add swagger
+article: https://medium.com/@samuelnoye35/simplifying-api-development-in-node-js-with-swagger-a5021ac45742
+-installation
+npm install swagger-jsdoc swagger-ui-express
+-Create a Swagger Configuration
+- Integrate Swagger Middleware
+-Document Your API Routes
+
+
 
 

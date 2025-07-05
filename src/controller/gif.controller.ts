@@ -47,7 +47,7 @@ export default class GifController {
         try {
             const result = await pool.query(`DELETE FROM gifs WHERE gif_id = $1 RETURNING *`, [id]);
             if (!result) {
-                errorResponse(res, 404, "User not found");
+                errorResponse(res, 404, "gif not found");
                 return;
             }
             const data = {
