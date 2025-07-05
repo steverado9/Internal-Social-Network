@@ -16,5 +16,16 @@ application is to facilitate more interaction between colleagues and promote tea
 
 |           Methods             |           urls                        |               Actions            |
 |           :-----:             |           :-----:                     |               :-----:            |
-
+|           post                |          api/v1/auth/create-user      |         create a user account    |      
+|           post                |          api/v1/auth/signin           |         sign into a user's account   |      
+|           post                |          api/v1/articles              |         post an article   |      
+|           put                 |          api/v1/articles/id              |         edit an article   |      
+|           delete                 |          api/v1/articles/id              |         delete an article   |      
+|           post                 |          api/v1/articles/id/comment         |         comment on an article   |      
+|           get                 |          api/v1/articles/id         |         get an article   |      
+|           post                 |          api/v1/gifs         |         post a gif   |      
+|           delete                 |          api/v1/gifs/id         |         delete a gif   |      
+|           post                 |          api/v1/gifs/id/comment         |         comment on a gif   |      
+|           get                 |          api/v1/gifs/id         |         get a gif   |      
+|           get                 |          api/v1/feed         |         view all articles and gifs   |      
 
