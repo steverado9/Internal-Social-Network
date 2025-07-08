@@ -9,7 +9,8 @@ export const successResponse = (res: Response, statuscode: number, data?: Record
 
 export const errorResponse = (res: Response, statuscode: number, message: string, err?: any) => {
     return res.status(statuscode).json({
-        message
+        message,
+        err
     })
 }
 

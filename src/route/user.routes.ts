@@ -1,6 +1,8 @@
 import { Router } from "express";
 import UserController from "../controller/user.controller";
 import auth from "../middleware/authjwt";
+import { createUserSchema, signinSchema } from "../schema/schema";
+import { validateSchema } from "../middleware/validateSchema";
 
 class UserRoutes {
     router = Router();
@@ -55,7 +57,7 @@ class UserRoutes {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/create-user", auth.verifyToken, auth.isAdmin, this.userController.createUser);
+        this.router.post("/create-user",validateSchema(createUserSchema), auth.verifyToken, auth.isAdmin, this.userController.createUser);
 
         // SIGN IN
         /**
@@ -90,7 +92,7 @@ class UserRoutes {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/signin", this.userController.signin);
+        this.router.post("/signin", validateSchema(signinSchema), this.userController.signin);
     }
 }
 

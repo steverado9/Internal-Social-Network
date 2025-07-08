@@ -11,11 +11,6 @@ export default class UserController {
     //create an user
     async createUser(req: Request, res: Response): Promise<void> {
         const { firstname, lastname, email, password, gender, job_role, department, address } = req.body;
-        //Basic validation
-        if (!email || !password) {
-            errorResponse(res, 400, 'email and password required');
-            return;
-        }
 
         // Validate role
         const allowedRoles = ['admin', 'employee'];

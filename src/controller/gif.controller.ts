@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import pool from "../db/db.config";
 import { successResponse, errorResponse } from "../response/handleResponse";
 import cloudinary from "../utils/cloudinary";
-import path, { dirname } from "node:path";
-import fsPromises from "fs/promises";
 
 export default class GifController {
     //create gif

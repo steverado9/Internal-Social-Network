@@ -71,6 +71,10 @@ npm install swagger-jsdoc swagger-ui-express
 - Integrate Swagger Middleware
 -Document Your API Routes
 
+15)zod
+create schema.
+parse the data, that is validte the data.
+
 
 
 

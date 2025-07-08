@@ -1,6 +1,8 @@
 import { Router } from "express";
 import ArticleController from "../controller/article.controller";
 import authenticate from "../middleware/authjwt";
+import { validateSchema } from "../middleware/validateSchema";
+import { createArticleSchema, editArticleSchema, addCommentSchema } from "../schema/schema";
 
 class ArticleRoute {
     router = Router();
@@ -42,7 +44,7 @@ class ArticleRoute {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/", authenticate.verifyToken, this.articleController.createArticle);
+        this.router.post("/", validateSchema(createArticleSchema), authenticate.verifyToken, this.articleController.createArticle);
 
         // EDIT ARTICLE
         /**
@@ -79,7 +81,7 @@ class ArticleRoute {
          *       500:
          *         description: Internal server error
          */
-        this.router.put("/:id", authenticate.verifyToken, this.articleController.editArticle);
+        this.router.put("/:id", validateSchema(editArticleSchema), authenticate.verifyToken, this.articleController.editArticle);
 
         // DELETE ARTICLE
         /**
@@ -144,7 +146,7 @@ class ArticleRoute {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/:id/comment", authenticate.verifyToken, this.articleController.createComment);
+        this.router.post("/:id/comment", validateSchema(addCommentSchema), authenticate.verifyToken, this.articleController.createComment);
 
         // GET ONE ARTICLE BY ID
         /**

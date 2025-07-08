@@ -1,6 +1,8 @@
 import { Router } from "express";
 import GifController from "../controller/gif.controller";
 import authenticate from "../middleware/authjwt";
+import { validateSchema } from "../middleware/validateSchema"; 
+import { creategifSchema, addCommentSchema } from "../schema/schema";
 
 class GifRoutes {
     router = Router();
@@ -42,7 +44,7 @@ class GifRoutes {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/", authenticate.verifyToken, this.gifController.createGif);
+        this.router.post("/", validateSchema(creategifSchema), authenticate.verifyToken, this.gifController.createGif);
 
         // DELETE GIF
         /**
@@ -107,7 +109,7 @@ class GifRoutes {
          *       500:
          *         description: Internal server error
          */
-        this.router.post("/:id/comment", authenticate.verifyToken, this.gifController.createComment);
+        this.router.post("/:id/comment", validateSchema(addCommentSchema), authenticate.verifyToken, this.gifController.createComment);
 
         // GET ONE GIF BY ID
         /**
