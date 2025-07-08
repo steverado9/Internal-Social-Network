@@ -16,7 +16,7 @@ const pool = new Pool({
     database: process.env.DB_NAME!,
     ssl: {
         rejectUnauthorized: true,
-        ca: fs.readFileSync('ca.pem').toString(),
+        ca: fs.readFileSync('ca.pem').toString() || process.env.PG_CA,
     },
     max: 20, // Max number of clients in the pool
     idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
