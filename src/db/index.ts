@@ -8,16 +8,16 @@ class Database {
     }
     async connectToDataBase(): Promise<void> {
         try {
-            await pool.query("SELECT NOW()");
+            await pool.query("SELECT VERSION()");
             console.log("connection has been established successfully.");
             // Call all the tables after establishing connection
             // await this.dropTables();
-            await this.usersTable();
-            await this.createAdmin();
-            await this.gifsTable();
-            await this.articlesTable();
-            await this.articleCommentTable();
-            await this.gifCommentTable();
+            // await this.usersTable();
+            // await this.createAdmin();
+            // await this.gifsTable();
+            // await this.articlesTable();
+            // await this.articleCommentTable();
+            // await this.gifCommentTable();
         } catch (err) {
             console.error("Unable to connect to the Database:", (err as Error).message);
         }

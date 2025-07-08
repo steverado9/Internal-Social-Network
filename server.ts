@@ -14,11 +14,13 @@ new Routes(app);
 new Database();
 
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+console.log(PORT);
+
 
 //Serve Swagger UI at /api-docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.listen(PORT, "localhost", () => {
+app.listen(PORT, () => {
     console.log(`Server is listening to port ${PORT}.`);
 })
     .on("error", (err: any) => {
