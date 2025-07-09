@@ -1,4 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
+import dotenv from "dotenv";
 
 const options = {
     definition: {
@@ -10,7 +11,7 @@ const options = {
         },
         servers: [
             {
-                url: "https://internal-social-network.onrender.com/api",
+                url: process.env.SWAGGER_URL_ONLINE
             },
         ],
         components: {
