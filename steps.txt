@@ -75,6 +75,12 @@ npm install swagger-jsdoc swagger-ui-express
 create schema.
 parse the data, that is validte the data.
 
+16)Host database on aiven
+video: https://www.youtube.com/watch?v=IbmZnNkKmlo
+
+17)Host backend on 
+video: https://www.youtube.com/watch?v=A2VoUyZZMCw
+
 
 
 
