@@ -6,7 +6,7 @@ import cloudinary from "../utils/cloudinary";
 export default class GifController {
     //create gif
     async createGif(req: Request, res: Response): Promise<void> {
-
+        console.log("createGif = >");
         const { title, image } = req.body;
         const user_id = (req as any).user.id
         if (!image || !title) {
@@ -41,6 +41,7 @@ export default class GifController {
 
     //delete gif
     async deletegif(req: Request, res: Response): Promise<void> {
+        console.log("deletegif = >");
         const id = req.params.id;
         try {
             const result = await pool.query(`DELETE FROM gifs WHERE gif_id = $1 RETURNING *`, [id]);
@@ -60,6 +61,7 @@ export default class GifController {
 
     //add comment to gif 
     async createComment(req: Request, res: Response): Promise<void> {
+        console.log("createComment = >");
         const { comment } = req.body;
         const gif_id = req.params.id;
         const user_id = (req as any).user.id;
@@ -93,6 +95,7 @@ export default class GifController {
 
      //get one gif
     async getOneGif(req: Request, res: Response): Promise<void> {
+        console.log("getOneGif = >");
         const gif_id = req.params.id;
         try {
             const result = await pool.query(`SELECT * FROM gifs WHERE gif_id = $1`, [gif_id]);
