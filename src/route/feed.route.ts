@@ -14,7 +14,7 @@ class FeedRoute {
         //VIEW ALL THE ARTICLES AND GIF BY TIME
         /**
         * @swagger
-        * api/v1/feed:
+        * /api/v1/feed:
         *   get:
         *     security: 
         *       - bearerAuth: []

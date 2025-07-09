@@ -16,7 +16,7 @@ class ArticleRoute {
         // CREATE ARTICLE
         /**
          * @swagger
-         * api/v1/articles:
+         * /api/v1/articles:
          *   post:
          *     security: 
          *       - bearerAuth: []
@@ -49,7 +49,7 @@ class ArticleRoute {
         // EDIT ARTICLE
         /**
          * @swagger
-         * api/v1/articles/{id}:
+         * /api/v1/articles/{id}:
          *   put:
          *     security: 
          *       - bearerAuth: []
@@ -86,7 +86,7 @@ class ArticleRoute {
         // DELETE ARTICLE
         /**
          * @swagger
-         * api/v1/articles/{id}:
+         * /api/v1/articles/{id}:
          *   delete:
          *     security: 
          *       - bearerAuth: []
@@ -112,7 +112,7 @@ class ArticleRoute {
         // ADD COMMENT TO ARTICLE
         /**
          * @swagger
-         * api/v1/articles/{id}/comment:
+         * /api/v1/articles/{id}/comment:
          *   post:
          *     security: 
          *       - bearerAuth: []
@@ -151,7 +151,7 @@ class ArticleRoute {
         // GET ONE ARTICLE BY ID
         /**
          * @swagger
-         * api/v1/articles/{id}:
+         * /api/v1/articles/{id}:
          *   get:
          *     security: 
          *       - bearerAuth: []
