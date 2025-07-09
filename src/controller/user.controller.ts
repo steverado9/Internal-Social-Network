@@ -10,7 +10,6 @@ dotenv.config();
 export default class UserController {
     //create an user
     async createUser(req: Request, res: Response): Promise<void> {
-        console.log("createUser = >");
         const { firstname, lastname, email, password, gender, job_role, department, address } = req.body;
 
         // Validate role
@@ -62,7 +61,6 @@ export default class UserController {
 
     //signin
     async signin(req: Request, res: Response): Promise<void> {
-        console.log("signin = >");
         try {
             //getting the email and password from the req.body
             const { email, password } = req.body;

@@ -5,7 +5,6 @@ import { successResponse, errorResponse } from "../response/handleResponse";
 export default class ArticleController {
     //create article
     async createArticle(req: Request, res: Response): Promise<void> {
-        console.log("createArticle = >");
         const { title, content } = req.body;
         const user_id = (req as any).user.id;
         if (!title || !content) {
@@ -35,7 +34,6 @@ export default class ArticleController {
 
     //edit article
     async editArticle(req: Request, res: Response): Promise<void> {
-        console.log("editArticle = >");
         const { title, content } = req.body;
         const id = req.params.id;
         try {
@@ -62,7 +60,6 @@ export default class ArticleController {
 
     //delete article
     async deleteArticle(req: Request, res: Response): Promise<void> {
-        console.log("deleteArticle =>");
         const id = req.params.id;
         try {
             const result = await pool.query(`DELETE FROM articles WHERE article_id = $1 RETURNING *`, [id]);
@@ -82,7 +79,6 @@ export default class ArticleController {
 
     //add comment to article
     async createComment(req: Request, res: Response): Promise<void> {
-        console.log("createComment = >");
         const { comment } = req.body;
         const article_id = req.params.id;
         const user_id = (req as any).user.id
@@ -117,7 +113,6 @@ export default class ArticleController {
 
     //get one article
     async getOneArticle(req: Request, res: Response): Promise<void> {
-        console.log("getOneArticle =>");
         const article_id = req.params.id;
         try {
             const result = await pool.query(`SELECT * FROM articles WHERE article_id = $1`, [article_id]);

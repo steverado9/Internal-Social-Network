@@ -23,8 +23,6 @@ const pool = new Pool({
     idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
 });
 
-const url = process.env.SWAGGER_URL_ONLINE
-console.log("url = >", url);
 
 export default pool;
 
