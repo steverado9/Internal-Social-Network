@@ -16,7 +16,7 @@ class GifRoutes {
         // CREATE GIF
         /**
          * @swagger
-         * /v1/gifs:
+         * api/v1/gifs:
          *   post:
          *     security: 
          *       - bearerAuth: []
@@ -49,7 +49,7 @@ class GifRoutes {
         // DELETE GIF
         /**
          * @swagger
-         * /v1/gifs/{id}:
+         * api/v1/gifs/{id}:
          *   delete:
          *     security: 
          *       - bearerAuth: []
@@ -75,7 +75,7 @@ class GifRoutes {
         // ADD COMMENT TO GIF
         /**
          * @swagger
-         * /v1/gifs/{id}/comment:
+         * api/v1/gifs/{id}/comment:
          *   post:
          *     security: 
          *       - bearerAuth: []
@@ -114,7 +114,7 @@ class GifRoutes {
         // GET ONE GIF BY ID
         /**
          * @swagger
-         * /v1/gifs/{id}:
+         * api/v1/gifs/{id}:
          *   get:
          *     security: 
          *       - bearerAuth: []

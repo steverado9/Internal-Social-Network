@@ -1,3 +1,4 @@
+import { log } from "console";
 import dotenv from "dotenv";
 import fs from "fs";
 import pkg from "pg";
@@ -21,6 +22,9 @@ const pool = new Pool({
     max: 20, // Max number of clients in the pool
     idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
 });
+
+const url = process.env.SWAGGER_URL_ONLINE
+console.log("url = >", url);
 
 export default pool;
 
