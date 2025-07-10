@@ -13,7 +13,7 @@ const options = {
         },
         servers: [
             {
-                url: process.env.SWAGGER_URL_ONLINE
+                url: process.env.SWAGGER_URL
             },
         ],
         components: {
