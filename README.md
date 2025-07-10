@@ -15,7 +15,7 @@ application is to facilitate more interaction between colleagues and promote tea
 
 ## HOW TO START APPLICATION
 1. Clone the repository from git hub.
-1. git install to update or install all necessary packages.
+1. npm install to update or install all necessary packages.
 1. npm start to start the application.
 
 
