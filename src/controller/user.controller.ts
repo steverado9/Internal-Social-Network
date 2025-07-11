@@ -89,7 +89,10 @@ export default class UserController {
             });
             const data = {
                 token: token,
-                userId: result.rows[0].user_id
+                userId: result.rows[0].user_id,
+                email: result.rows[0].email,
+                jobRole: result.rows[0].job_role,
+                fullName: result.rows[0].firstname + " " + result.rows[0].lastname
             }
             successResponse(res, 201, data);
         } catch (err) {
