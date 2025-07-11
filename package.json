@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha",
     "build": "tsc",
-    "start": "tsc && node build/server.js",
-    "dev": "tsc && nodemon"
+    "start": "tsc && nodemon",
+    "dev": "tsc && node build/server.js"
   },
   "keywords": [],
   "author": "",
