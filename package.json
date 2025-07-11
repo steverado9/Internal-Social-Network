@@ -2,11 +2,12 @@
   "name": "andela-teamwork",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha",
     "build": "tsc",
-    "start": "tsc && nodemon"
+    "start": "tsc",
+    "dev": "tsc && nodemon"
   },
   "keywords": [],
   "author": "",
