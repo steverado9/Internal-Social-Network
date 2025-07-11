@@ -5,8 +5,6 @@ dotenv.config();
 
 const { Pool } = pkg;
 
-console.log("env ", process.env.NODE_ENV);
-
 let pool: pkg.Pool
 
 if (process.env.NODE_ENV === "development") {
