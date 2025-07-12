@@ -69,15 +69,14 @@ export default class UserController {
             SELECT * FROM users WHERE email=$1 `,
                 [email]
             );
-
-            if (!result) {
+            if (result.rowCount === 0) {
                 errorResponse(res, 404, "User not found!");
                 return;
             }
             //comparing password from the req.body and database
             const isMatch = await bcrypt.compare(password, result.rows[0].password);
             if (!isMatch) {
-                errorResponse(res, 401, "Invalid password!");
+                errorResponse(res, 401, "Invalid username and password!");
                 return;
             }
             //Generate token
