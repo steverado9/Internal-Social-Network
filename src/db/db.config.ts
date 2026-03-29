@@ -18,15 +18,11 @@ if (process.env.NODE_ENV === "development") {
     });
 } else {
     // Production
+    console.log("DATABASE_URL:", process.env.DATABASE_URL);
     pool = new Pool({
-        host: process.env.DB_HOST!,
-        user: process.env.DB_USER!,
-        password: process.env.DB_PASSWORD!,
-        port: Number(process.env.PORT!),
-        database: process.env.DB_NAME!,
+        connectionString: process.env.DATABASE_URL,
         ssl: {
-            rejectUnauthorized: true,
-            ca: fs.readFileSync('ca.pem').toString() || process.env.PG_CA,
+            rejectUnauthorized: false  
         },
         max: 20, // Max number of clients in the pool
         idleTimeoutMillis: 30000, // Close idle clients after 30 seconds

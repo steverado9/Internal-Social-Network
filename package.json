@@ -7,7 +7,8 @@
     "test": "mocha",
     "build": "tsc",
     "start": "tsc && nodemon",
-    "dev": "tsc && node build/server.js"
+    "dev": "tsc && node build/server.js",
+    "prod": "tsc && node build/server.js"
   },
   "keywords": [],
   "author": "",
