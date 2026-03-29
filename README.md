@@ -18,7 +18,7 @@ application is to facilitate more interaction between colleagues and promote tea
 1. `npm install` to install all necessary packages.
 1. rename .env.example to .env
 1. `npm start` to start the application.
-1. you can test it using this swaggerUrl = https://internal-social-network.onrender.com/api-docs
+1. you can test it using this swaggerUrl = https://internal-social-network-production.up.railway.app/api-docs/
 
 
 |           Methods             |           urls                          |               Actions                |
